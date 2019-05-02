@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use App\Entity\Property;
 use App\Repository\PropertyRepository;
@@ -33,7 +31,6 @@ class PropertyController extends abstractController
     /**
      * @Route("/biens", name="property.index")
      */
-
     public function index(): Response
     {
         return $this->render('property/index.html.twig', [
@@ -44,7 +41,6 @@ class PropertyController extends abstractController
     /**
      * @Route("/biens/{slug} - {id}", name="property.show", requirements={"slug" : "[a-z0-9\-]*"})
      */
-
     public function show(Property $property, string $slug, $id): Response
     {
 
@@ -63,7 +59,4 @@ class PropertyController extends abstractController
             'current_menu' => 'properties'
         ]);
     }
-
-
-
 }
