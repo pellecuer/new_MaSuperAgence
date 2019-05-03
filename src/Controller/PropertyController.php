@@ -3,13 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Property;
+use App\Entity\PropertySearch;
+use App\Form\PropertySearchType;
 use App\Repository\PropertyRepository;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PropertyController extends abstractController
 {
@@ -36,16 +38,21 @@ class PropertyController extends abstractController
         //créer une entité qui va représenter notre recheche (nb pièce max + prix max)
         // Créer un formulaire
         //Gérer le traitement dans le controller
+        $search = new PropertySearch();
+        $form = $this->createForm(PropertySearchType::class, $search);
+        $form->handleRequest($request);
+
 
 
         $properties= $paginator->paginate(
-            $this->repository->findAllVisibleQuery(),
+            $this->repository->findAllVisibleQuery($search),
             $request->query->getInt('page', 1), /*page number*/
             12 /*limit per page*/
         );             
         return $this->render('property/index.html.twig', [
             'current_menu' => 'properties',
-            'properties' => $properties
+            'properties' => $properties,
+            'form' =>$form->createView()
         ]);
     }
 
