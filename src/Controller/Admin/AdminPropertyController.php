@@ -1,9 +1,9 @@
 <?php
 
-
 namespace App\Controller\Admin;
 
 use App\Entity\Property;
+
 use App\Form\PropertyType;
 use App\Repository\PropertyRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,8 +73,8 @@ class AdminPropertyController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function edit(Property $property, Request $request) {
-
-        $form = $this->createForm(PropertyType::class, $property);
+        //dump('coco');die;
+        $form = $this->createForm(PropertyType::class, $property);        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $this->em->flush();
