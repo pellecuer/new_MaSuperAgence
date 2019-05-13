@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Cocur\Slugify\Slugify;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 
@@ -19,7 +21,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 class Property
 {
-
 
     const HEAT = [
         0 => 'Electrique',
@@ -125,13 +126,15 @@ class Property
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * 
+     * @var \DateTime|null
      */
     private $updated_at;
 
 
     public function __construct()
     {
-        $this->created_at = new \DateTime();
+        $this->created_at = new \DateTime();       
         $this->options = new ArrayCollection();
 
     }
@@ -360,7 +363,7 @@ class Property
     /**
      * Set undocumented variable
      *
-     * @param  string|null  $filename  Undocumented variable
+     * @param  string|null
      *
      * @return  self
      */ 
@@ -384,22 +387,25 @@ class Property
     /**
      * Set the value of imageFile
      *
-     * @param  File|null  $imageFile
+     * @param  null|File $imageFile
      *
      * @return Property
      */ 
-    public function setImageFile($imageFile)
+    public function setImageFile(File $imageFile):Property
     {
         $this->imageFile = $imageFile;
+        if (null !== $imageFile) {
+            
+
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updated_at = new \DateTime ('now');
+        }
+       
 
         // Only change the updated af if the file is really uploaded to avoid database updates.
         // This is needed when the file should be set when loading the entity.
-        if ($this->imageFile instanceof UploadedFile) {
-            $this->updated_at = new \DateTime('now');
-        }
-
-
-
+        
         return $this;
     }
 
