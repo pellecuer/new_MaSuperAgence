@@ -5,6 +5,7 @@
 /.env.*.local
 /public/bundles/
 
+.idea
 .idea/workspace.xml
 /var/
 /vendor/
