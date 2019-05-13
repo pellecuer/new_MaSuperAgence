@@ -8,12 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Cocur\Slugify\Slugify;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PropertyRepository")
  * @UniqueEntity("title")
+ * @Vich\Uploadable
  */
 class Property
 {
@@ -30,6 +32,23 @@ class Property
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * Undocumented variable
+     *
+     * @var string|null
+     * @ORM\Column(type="string", length=255)
+     */
+    private $filename;
+
+
+    /**    
+     *
+     * @var File|null
+     * @Vich\UploadableField(mapping="property_image", fileNameProperty="filename")
+     * 
+     */
+    private $imageFile;
 
     /**
      * @Assert\Length(min = 5, max = 50)
@@ -103,6 +122,11 @@ class Property
      * @ORM\ManyToMany(targetEntity="App\Entity\Option", inversedBy="properties")
      */
     private $options;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated_at;
 
 
     public function __construct()
@@ -317,6 +341,76 @@ class Property
             $this->options->removeElement($option);
             $option->removeProperty($this);
         }
+
+        return $this;
+    }
+
+    
+
+    /**
+     * Get undocumented variable
+     *
+     * @return  string|null
+     */ 
+    public function getFilename()
+    {
+        return $this->filename;
+    }
+
+    /**
+     * Set undocumented variable
+     *
+     * @param  string|null  $filename  Undocumented variable
+     *
+     * @return  self
+     */ 
+    public function setFilename($filename)
+    {
+        $this->filename = $filename;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of imageFile
+     *
+     * @return  File|null
+     */ 
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * Set the value of imageFile
+     *
+     * @param  File|null  $imageFile
+     *
+     * @return Property
+     */ 
+    public function setImageFile($imageFile)
+    {
+        $this->imageFile = $imageFile;
+
+        // Only change the updated af if the file is really uploaded to avoid database updates.
+        // This is needed when the file should be set when loading the entity.
+        if ($this->imageFile instanceof UploadedFile) {
+            $this->updated_at = new \DateTime('now');
+        }
+
+
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    {
+        $this->updated_at = $updated_at;
 
         return $this;
     }
