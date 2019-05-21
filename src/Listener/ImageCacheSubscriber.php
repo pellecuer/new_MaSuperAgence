@@ -4,10 +4,29 @@ namespace App\Listener;
 use Doctrine\Common\EventSubscriber;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Doctrine\ORM\Event\PreFlushEventArgs;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use App\Entity\Property;
+use Doctrine\Common\Persistence\Event\PreUpdateEventArgs;
 
 class ImageCacheSubscriber Implements EventSubscriber {
 
+    
+    
+    /**
+     * @var CacheManager
+     */
+    private $cacheManager;
+
+    /**
+     * @var UploaderHelper
+     */
+    private $uploaderHelper;  
+
+    
+    /**
+     * @var UploaderHelper
+     */
     public function __construct(CacheManager $cacheManager, UploaderHelper $uploaderHelper)
     {
         $this->cacheManager = $cacheManager;
@@ -23,12 +42,24 @@ class ImageCacheSubscriber Implements EventSubscriber {
         ];        
     } 
 
-    public function preRemove (PreFlushEventArgs $args){
+    public function preRemove (LifecycleEventArgs $args){
+        $entity = $args->getEntity();
+        if (!$entity instanceof Property) {
+            return;
+        }
+        $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'imageFile'));
+      
+
     }
 
     public function preUpdate(PreUpdateEventArgs $args) {
-        dump($args->getEntity());
-        dump($args->getObject());
+        $entity = $args->getEntity();
+        if (!$entity instanceof Property) {
+            return;
+        }
+        if($entity->getImageFile() instanceof UploadedFile){
+            $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'imageFile'));
+        };        
     }
 }
 

@@ -21,5 +21,7 @@
 ###< symfony/web-server-bundle ###
 
 ###> liip/imagine-bundle ###
-/public/media/cache/
+public/media/cache/
+public/image
+
 ###< liip/imagine-bundle ###
