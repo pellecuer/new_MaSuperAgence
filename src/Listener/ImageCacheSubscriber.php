@@ -24,14 +24,12 @@ class ImageCacheSubscriber Implements EventSubscriber {
     } 
 
     public function preRemove (PreFlushEventArgs $args){
-
     }
 
     public function preUpdate(PreUpdateEventArgs $args) {
         dump($args->getEntity());
         dump($args->getObject());
     }
-
 }
 
 
