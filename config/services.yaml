@@ -24,9 +24,9 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    App\Listenner\ImageCacheSubscriber:
+    App\Listener\ImageCacheSubscriber:
         tags:
-        - { name: doctrine.event_subsriber }
+        - { name: doctrine.event_subscriber }
 
 
     # add more service definitions when explicit configuration is needed

@@ -10,7 +10,6 @@ use App\Entity\Property;
 use Doctrine\Common\Persistence\Event\PreUpdateEventArgs;
 
 class ImageCacheSubscriber Implements EventSubscriber {
-
     
     
     /**
@@ -42,7 +41,7 @@ class ImageCacheSubscriber Implements EventSubscriber {
         ];        
     } 
 
-    public function preRemove (LifecycleEventArgs $args){
+    public function preRemove (LifecycleEventArgs $args){        
         $entity = $args->getEntity();
         if (!$entity instanceof Property) {
             return;
