@@ -1,0 +1,26 @@
+{
+  "name": "maSuperAgence-master",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pellecuer/new_MaSuperAgence.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pellecuer/new_MaSuperAgence/issues"
+  },
+  "homepage": "https://github.com/pellecuer/new_MaSuperAgence#readme",
+  "dependencies": {
+    "mjml": "^4.4.0-beta.1"
+  }
+}
