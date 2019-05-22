@@ -6,6 +6,18 @@
 {% block body %}
     <div class="jumbotron">
         <div class="container">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message}}
+                </div> 
+            {% endfor %}
+
+            {% if not form.vars.value %}
+                <div class="alert alert-success">
+                    Erreur dans la saisie de votre formulaire
+                </div>               
+            {% endif %}    
+
             <div class="row">
                 <div class="col-md-8">
                 {% if property.filename %}
@@ -23,6 +35,18 @@
                     </h2>
                     <div class="text-primary">{{ property.formatedPrice }} €</div>
                     <a href="#" class="btn btn-primary">Contacter l'agence</a>
+                    <div id="contactForm" class="mt-4">
+                        {{form_start(form)}}
+                        <div class="row">
+                            <div class="col">{{ form_row(form.firstName) }}</div>
+                            <div class="col">{{ form_row(form.lastName) }}</div>                            
+                        </div>
+                        {{form_rest(form)}}
+                        <div class="form-group">
+                            <button class="btn btn-primary">Envoyer</button>
+                        </div>
+                        {{form_start(form)}}
+                    </div>
                 </div>
             </div>
         </div>
