@@ -21,6 +21,12 @@
   },
   "homepage": "https://github.com/pellecuer/new_MaSuperAgence#readme",
   "dependencies": {
-    "mjml": "^4.4.0-beta.1"
+    "mjml": "^4.4.0-beta.1",
+    "select2": "^4.0.7"
+  },
+  "devDependencies": {
+    "@symfony/webpack-encore": "^0.27.0",
+    "webpack-notification": "^0.0.5",
+    "webpack-notifier": "^1.6.0"
   }
 }
